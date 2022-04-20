@@ -1,27 +1,23 @@
 ---
-title: About
-layout: about
+layout: page
+title: About 
+order: 1
+object-id: about
 permalink: /about.html
-# include CollectionBuilder info at bottom
-credits: true
-# Edit the markdown on in this file to describe your collection
-# Look in _includes/feature for options to easily add features to the page
 ---
+# About {{site.title}}
 
-{% include feature/jumbotron.html objectid="https://cdil.lib.uidaho.edu/images/palouse_sm.jpg" %}
+The Oral History as Data (OHD) tool is a static website generator that allows users to analyze and publish coded oral history or qualitative interview files. By turning transcriptions into tagged/coded CSV files, adding a list of filters, and creating a simple markdown file for each interview (to be included in the _transcripts collection), OHD will provide filterable transcripts and a color coded visualization for all transcripts included. 
 
-{% include feature/nav-menu.html sections="About the Collection;About the About Page" %}
+Use this template site and the demo files included as examples for your own data/transcripts and then delete them. You can then delete this text and write your own about page for your project, using markdown 
 
-## About the Collection
+Detailed How To instructions can be found on [the project website](https://uidaholib.github.io/oral-history-as-data/). 
 
-This site is generated using [CollectionBuilder-GH](https://collectionbuilding.github.io/gh/), a project to create a free and simple digital collection using [GitHub Pages](https://pages.github.com/) from: 
+Please feel free to contact me with any questions. I'm happy to help. <dbecker@uidaho.edu>
 
-- a CSV of collection metadata
-- a folder of JPG images or PDF documents
 
-The template repository features four objects from the University of Idaho Library's [Digital Collections](https://www.lib.uidaho.edu/digital). 
+ 
 
-For full details of creating your own collection site, visit [CollectionBuilder Documentation](https://collectionbuilder.github.io/cb-docs/)!
 
-<!-- IMPORTANT!!! DELETE this comment and the include below when you are finished editing this page for your collection. The include below introduces about page features. They will show up on your collection's about page until you delete it.  -->
-{% include cb/about_the_about.md %} 
+
+
