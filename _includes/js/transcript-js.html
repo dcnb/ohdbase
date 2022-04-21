@@ -1,34 +1,36 @@
 <script type="text/javascript">
-  $("#filters").on('change', function() {
-  var myClass = this.value;
+ 
+ $("#filters").on('change', function () {
+   console.log('go');
   if (myClass == "all"){
     $("button.reset").click();
   }
-  else{
-   $("tr").removeClass("featured"); 
-   $('tr').removeClass("anchored-highlight"); 
-  $("tr").addClass("d-none"); 
-    $('tr.'+myClass).removeClass("d-none").addClass("featured"); 
-    $("input#quicksearch").val(""); 
-    var numberofint = $('tr.featured').length;
-   $("#numberof").html(numberofint);
-   $("select").not(this).val($("option:first").val());
-   let url = new URL(window.location);
-let params = url.searchParams;
-params.set('filter', myClass); 
-params.delete('q'); 
- var p = params.toString();
-window.history.replaceState({}, '', location.pathname + '?' + p );
+  else {
+    var myClass = this.value;
+    $("input#quicksearch").val("");
+    $(".line").removeClass("featured");
+    $(".line").addClass("grey");    
+    $('.line').removeClass("anchored-highlight");
+    $('div.' + myClass).addClass("featured");;
+    var numberof = $('div.'+ myClass).length;
+    $("#numberof").html(numberof + " lines");
+    $('.linecount').removeClass('d-none');
+    let url = new URL(window.location);
+    let params = url.searchParams;
+    params.set('filter', myClass);
+    params.delete('q');
+    params.delete('scene');
+    var p = params.toString();
+    window.history.replaceState({}, '', location.pathname + '?' + p);
   }
- });
+  });
 
    $("button.reset").click(function() {
-  $("tr").removeClass("grey"); 
-  $('tr').removeClass("anchored-highlight"); 
-    $("tr").removeClass("featured"); 
+  $("div").removeClass("grey"); 
+  $('div').removeClass("anchored-highlight"); 
+    $("div").removeClass("featured"); 
     $("input#quicksearch").val(""); 
     $("#filters").val($("#filters option:first").val());
-    $("#filters-two").val($("#filters-two option:first").val());
     var numberofint = $('tr').length;
    $("#numberof").html(numberofint);
    let url = new URL(window.location);
@@ -41,9 +43,9 @@ window.history.replaceState({}, '', location.pathname + '?' + p );
 
 
  function filterLines() {
-    $('tr').removeClass("anchored-highlight");
-    $("tr").removeClass("featured");
-    $("tr").addClass("grey");
+    $('.line').removeClass("anchored-highlight");
+    $(".line").removeClass("featured");
+    $(".line").addClass("grey");
     var input, filter, p, span, i;
     input = document.getElementById("quicksearch");
     let url = new URL(window.location);
@@ -54,10 +56,10 @@ window.history.replaceState({}, '', location.pathname + '?' + p );
     filterplain = input.value;
     filter = input.value.toUpperCase();
     itemcontainer = document.getElementById("contents-container");
-    item = itemcontainer.getElementsByTagName("tr");
+    item = itemcontainer.getElementsByClassName("line");
     var searchResults = '<option>Select and scroll to a matching line</option>';
     for (i = 0; i < item.length; i++) {
-      itemcontents = item[i].getElementsByTagName("div")[0];
+      itemcontents = item[i].getElementsByClassName("words")[0];
       var index = itemcontents.innerHTML.indexOf(filterplain);
       if (itemcontents) {
         if (itemcontents.innerHTML.toUpperCase().indexOf(filter) > -1) {
@@ -92,76 +94,8 @@ window.history.replaceState({}, '', location.pathname + '?' + p );
 console.log(position + ' - ' + plus_position);
 }
 
-   function filterItems() {
-    $('tr').removeClass("anchored-highlight"); 
-     var input, filter, table, tr, td, i;
-     input = document.getElementById("quicksearch");
-     let url = new URL(window.location);
-let params = url.searchParams;
-params.set('q', input.value); 
- var p = params.toString();
-window.history.replaceState({}, '', location.pathname + '?' + p );
-    filterplain = input.value; 
-    filter = input.value.toUpperCase();
-     itemcontainer = document.getElementById("contents-container");
-     item = itemcontainer.getElementsByTagName("tr");
-     for (i = 0; i < item.length; i++) {
-       itemcontents = item[i].getElementsByTagName("div")[0];
-       var index = itemcontents.innerHTML.indexOf(filterplain);
-       console.log(filter + index)
-       if (itemcontents) {
-         if (itemcontents.innerHTML.toUpperCase().indexOf(filter) > -1) {
-           item[i].classList.add("featured");
-           item[i].classList.remove("grey");
-        itemcontents.innerHTML = itemcontents.innerHTML.replace(filterplain,"<span class='text-danger'>"+ filterplain +"</span>");
 
-         } else {
-           item[i].classList.remove("featured");
-           item[i].classList.add("grey");
-         }
-       }       
-     }
-     var numberofint = $('tr.featured').length;
-   $("#numberof").html(numberofint);
-   $("#filters").val($("#filters option:first").val("search filtering"));
-   }
-   function filterNotes() {
-     var input, filter, table, tr, td, i;
-     input = document.getElementById("quicksearch");
-     filter = input.value.toUpperCase();
-     notecontainer = document.getElementById("notes-container");
-     note = notecontainer.getElementsByTagName("li");
-     for (i = 0; i < item.length; i++) {
-       notecontents = note[i].getElementsByTagName("a")[0];
-       if (itemcontents) {
-         if (itemcontents.innerHTML.toUpperCase().indexOf(filter) > -1) {
-           item[i].classList.remove("hidden-all");
-         } else {
-           item[i].classList.add("hidden-all");
-         }
-       }       
-     }
-   }
-   </script>
-<script>
-// fiter items by entering value of button or link pushed into quicksearch box
 
-var filterit = function() {
-let url = new URL(window.location);
-let params = url.searchParams;
-$('#quicksearch').val('');
- var filterValue = $(this).attr('data-filter');
- var filterClass = $(this).attr('data-filter').replace(" ","-").replace(" ","-");
-$('#quicksearch').val($('#quicksearch').val() + filterValue);
- $('#goButton').click();
- params.set('filter', filterValue); 
- var p = params.toString();
-window.history.replaceState({}, '', location.pathname + '?' + p );
-  var filterValueclass = "." + filterClass;
-$(filterValueclass).addClass('active');
-};
-// run filterit function when link/button with class filter clicked
-$('a.filter').click(filterit);
 
   // click goButton to search if return pressed in search box
   $('#quicksearch').keypress(function(e){
@@ -170,9 +104,7 @@ $('a.filter').click(filterit);
            //Trigger search button click event
         }
    });
-// get hash from url
-// var hashfilter = decodeURIComponent(location.hash.substr(1));//.replace(/%20/g, " ");
-//var hashfilterclass = "." + location.hash.substr(1).replace("%20","-").replace("%20","-").replace("%20","-").replace(" ","-").replace(" ","-").replace(" ","-");
+
 
 $(document).ready(function() {
  let url = new URL(window.location);
@@ -185,11 +117,14 @@ var hashfilter = decodeURIComponent(location.hash.substr(1));//.replace(/%20/g, 
   $('#quicksearch').val($('#quicksearch').val() + dataFilter);
  $('#goButton').click();
  params.delete('filter'); 
+ $('#filter-button').click();
+
  //$(hashfilterclass).addClass('active');
  }
  else if(codeFilter) { params.delete('q'); 
      // code to be executed if a filter is contained in the url search parameters
   $('#filters').val(codeFilter).change();
+  $('#filter-button').click();
  //$(hashfilterclass).addClass('active');
  }
  else if(hashfilter) { params.delete('q'); 

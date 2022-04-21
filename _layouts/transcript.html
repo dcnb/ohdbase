@@ -1,113 +1,125 @@
 ---
 layout: default
 ---
-{% if page.object-id == 'all' %}
+{% if page.objectid == 'all' %}
 {% assign transcripts = site.data.transcripts %}
 {%capture avsources%}{% for y in site.transcripts %}{{ y.av_source }};{% endfor %}
 {% endcapture %}
 {% assign avlinks-list = avlinks | split: ";" %}
 {% else %}
-{% assign items = site.data.transcripts[page.object-id] %}
+{% assign items = site.data.transcripts[page.objectid] %}
 {%- comment -%} find all words used in the subject metadata {%- endcomment -%}
 {%- assign min-count = 1 -%}
 {%- assign raw-subjects = items | map: "tags" | compact | join: ";" | split: ";" -%}
-{%- capture subjects -%}{% for s in raw-subjects %}{% if s != "" %}{{- s | strip -}};{% endif %}{%- endfor -%}{%- endcapture -%}
+{%- capture subjects -%}{% for s in raw-subjects %}{% if s != "" %}{{- s | strip -}};{% endif %}{%- endfor -%}{%-
+endcapture -%}
 {%- assign subjects = subjects | split: ";" -%}
 {%- assign uniqueSubjects = subjects | uniq | sort -%}
 {%endif%}
 
 
 <div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <header>
-        <h2 class="my-2">{{ page.title}}</h2>
-        <p>{%if page.location%}{{page.location}} on {%endif%}{%if page.date-interviewed%}{{page.date-interviewed}}{%endif%} </p>
-        {%if page.interviewer%}<p>Interviewer: {{page.interviewer}}</p>{%endif%}
-      </header>
-      {% if page.av_source contains 'mp3' %}{% include player/mp3.html %}{% elsif page.av_source contains 'youtube' %}{% include player/youtube.html %}{% elsif page.av_source contains 'soundcloud' %}{% include player/soundcloud.html %}{% endif %}
-      <div class="row my-3 sticky-top bg-white border-bottom border-left border-right d-print-none w-75" id="collapseFilters">
-        <div class="col-md-4">
-            <p class="pt-4">
-                <select id="filters" title="Jump to a year" class="filteroptions filters px-3 py-2" style="max-width: 100%;">
-                    <option value="#" class="reset" selected="selected reset">Filter by Topic</option>
-                    <option value="all" selected="selected">On All Topics</option>
-                    {% assign filters = site.data.filters %}
-                    {% if page.object-id == 'all' %}
-                    {% for filter in filters %}
-                    <option value="{{ filter.tag }}">{{filter.description | capitalize}}</option>
-                    {% endfor %}
-                    {%else%}
-                    {% for filter in filters %}
-                    {%if uniqueSubjects contains filter.tag %}<option value="{{ filter.tag }}">{{filter.description | capitalize}}</option>{%endif%}
-                    {% endfor %}
-                    {%endif%}
-                </select>
-            </p>
-        </div>
-        <div class="col-md-6">
-            <div id="transcriptsearch" class="bg-lightr">
-                <div class="row pt-4">
-                    <div class="col-md-6">
-                        <div class="input-group fs-5">
-                            <input type="text" class="form-control" placeholder="Search..." aria-label="Search" aria-describedby="goButton" id="quicksearch">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary rounded-right border-light input-group-text" type="submit" title="Search" alt="Search" id="goButton" onclick="filterLines()">Go</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <button class="reset btn btn-sm btn-outline-primary mt-1" href="#" data-filter="">Reset Filters</button>
-                        <h5 class="d-none linecount mt-2 small ms-3"><span id="numberof"></span></h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 d-none filter-search mt-2 small">
-            <h5 class="d-none linecount small ms-3"><span id="numberof"></span></h5>
-         
-            <select class=" mb-2 form-select" id="searchResults" onchange="scrollToLine();">
-    
-            </select>
-        </div>
-    </div>
-      
-         
-          
+  <button class="btn btn-outline-dark sticky-top float-end  p-3 bg-white mt-3" type="button" data-bs-toggle="collapse"
+    data-bs-target="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters" id="filter-button">
+    Filters <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-funnel-fill"
+      viewBox="0 0 20 20">
+      <path
+        d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z" />
+    </svg>
+  </button>
+  <header>
 
-      
-      <div class="col-md-8 ml-md-3">
-      <table id="contents-container">
-        {% if page.object-id == 'all' %}
-        {% for transcript in site.data.transcripts %}{%assign transcript-name = transcript[0] %}
-        {% for item in transcript[1] %}
-        <tr id="{{page.object-id}}{{ forloop.index }}" class="{{item.tags | replace: ';', ' '}}">
-          <td class="line">{{transcript-name}}-{{ forloop.index }}</td>
-          <td class="words">
-            <div id="spoken">{%if item.speaker%}{{item.speaker | remove: ":"}}: {%endif%}{{item.words}}</div>
-          </td>
-          <td class="timestamp">{%if item.timestamp%}
-            <a href="{{ forloop.index | prepend: transcript-name | prepend: '.html#' | prepend: transcript-name | prepend: '/transcripts/' | relative_url }}">{{item.timestamp}}</a>{% endif %}</td>
-        </tr>
-        {% endfor %}{% endfor %}
-        {% else %}
-        {% for item in items %}
-        <tr id="{{page.object-id}}{{ forloop.index }}" class="{{item.tags | replace: ";", " "}}">
-          <td class="line">{{ forloop.index }}</td>
-          <td class="words">
-            <div id="spoken">{{item.speaker | remove: ":"}}: {{item.words}}</div>
-          </td>
-          <td class="timestamp">{%if item.timestamp%}{% if page.av_source %}
-{% capture avlink %}timestamp/{{page.av_source}}.html{% endcapture %}
-            <a  href="{% include {{avlink}} %}">{{item.timestamp}}</a>{% else %}{{item.timestamp}}{% endif %}{% endif %}</td>
-        </tr>
+    <h2 class="my-2">{{ page.title}}</h2>
+    <p>{%if page.location%}{{page.location}} on {%endif%}{%if page.date-interviewed%}{{page.date-interviewed}}{%endif%}
+    </p>
+    {%if page.interviewer%}<p>Interviewer: {{page.interviewer}}</p>{%endif%}
+  </header>
+  {% if page.av_source contains 'mp3' %}{% include player/mp3.html %}{% elsif page.av_source contains 'youtube' %}{%
+  include player/youtube.html %}{% elsif page.av_source contains 'soundcloud' %}{% include player/soundcloud.html %}{%
+  endif %}
+
+  <div class="row my-3 sticky-top bg-white border-bottom border-left border-right d-print-none w-75 collapse pb-3"
+    id="collapseFilters">
+    <div class="col-md-4 pt-4">
+      <select id="filters" title="Jump to a year" class="filteroptions filters p-1" style="max-width: 100%;">
+        <option value="#" class="reset" selected="selected reset">Filter by Topic</option>
+        <option value="all" selected="selected">On All Topics</option>
+        {% assign filters = site.data.filters %}
+        {% if page.objectid == 'all' %}
+        {% for filter in filters %}
+        <option value="{{ filter.tag }}">{{filter.description | capitalize}}</option>
         {% endfor %}
-        {% endif %}
-      </table>
+        {%else%}
+        {% for filter in filters %}
+        {%if uniqueSubjects contains filter.tag %}<option value="{{ filter.tag }}">{{filter.description | capitalize}}
+        </option>{%endif%}
+        {% endfor %}
+        {%endif%}
+      </select>
+
     </div>
-
-
+    <div class="col-md-6">
+      <div id="transcriptsearch" class="bg-lightr">
+        <div class="row pt-4">
+          <div class="col-md-6">
+            <div class="input-group fs-5">
+              <input type="text" class="form-control" placeholder="Search..." aria-label="Search"
+                aria-describedby="goButton" id="quicksearch">
+              <div class="input-group-append">
+                <button class="btn btn-primary rounded-right border-light input-group-text" type="submit" title="Search"
+                  alt="Search" id="goButton" onclick="filterLines()">Go</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <button class="reset btn btn-sm btn-outline-primary mt-1" href="#" data-filter="">Reset Filters</button>
+            <h5 class="d-none linecount mt-2 small ms-3"><span id="numberof"></span></h5>
+          </div>
+        </div>
+      </div>
     </div>
+    <div class="col-12 d-none filter-search mt-2 small">
+      <h5 class="d-none linecount small ms-3"><span id="numberof"></span></h5>
 
+      <select class=" mb-2 form-select" id="searchResults" onchange="scrollToLine();">
+
+      </select>
+    </div>
   </div>
+
+
+
+
+  <div id="contents-container">
+    {% if page.objectid == 'all' %}
+    {% for transcript in site.data.transcripts %}{%assign transcript-name = transcript[0] %}
+    {% for item in transcript[1] %}
+    <div id="{{page.objectid}}{{ forloop.index }}" class="row line {{item.tags | replace: ';', ' '}} my-3">
+      <div class="linenum col-1 small mt-2">{{transcript-name}}-{{ forloop.index }}</div>
+      <p class="words col-10 col-md-8 col-print-10 my-3">
+        {%if item.speaker%}{{item.speaker | remove: ":"}}: {%endif%}{{item.words}}
+      </p>
+      <div class="col-1 timestamp">{%if item.timestamp%}
+        <a
+          href="{{ forloop.index | prepend: transcript-name | prepend: '.html#' | prepend: transcript-name | prepend: '/transcripts/' | relative_url }}">{{item.timestamp}}</a>{%
+        endif %}
+      </div>
+    </div>
+    {% endfor %}{% endfor %}
+    {% else %}
+    {% for item in items %}
+    <div id="{{page.objectid}}{{ forloop.index }}" class="row line {{item.tags | replace: ';', ' '}} my-1">
+      <div class="linenum col-1 small mt-2">{{ forloop.index }}</div>
+      <p class="words col-10 col-md-8 col-print-10 pr-0">
+        {%if item.speaker%}<span class="fw-bold">{{item.speaker | remove: ":"}}:</span> {%endif%}{{item.words}}
+      </p>
+      <div class="col-1 timestamp">{%if item.timestamp%}{% if page.av_source %}
+        {% capture avlink %}timestamp/{{page.av_source}}.html{% endcapture %}
+        <a href="{% include {{avlink}} %}">{{item.timestamp}}</a>{% else %}{{item.timestamp}}{% endif %}{% endif %}
+      </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+  </div>
+
 </div>

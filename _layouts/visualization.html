@@ -57,8 +57,8 @@ layout: default
 
 
   {% for transcript in site.data.transcripts %}{%assign transcript-name = transcript[0] %}
-  {%capture audiovideo-id %}{%for item in site.transcripts%}{%if item.object-id == transcript-name %}{{item.audiovideo-id}}{%endif%}{%endfor%}{% endcapture %}
-  {%capture avlink %}{%for item in site.transcripts%}{%if item.object-id == transcript-name %}timestamp/{{item.av_source}}.html{%endif%}{%endfor%}{% endcapture %}
+  {%capture audiovideo-id %}{%for item in site.transcripts%}{%if item.objectid == transcript-name %}{{item.audiovideo-id}}{%endif%}{%endfor%}{% endcapture %}
+  {%capture avlink %}{%for item in site.transcripts%}{%if item.objectid == transcript-name %}timestamp/{{item.av_source}}.html{%endif%}{%endfor%}{% endcapture %}
   {% for item in transcript[1] %}
   {% if forloop.first %}
   <div class="contentsdiv">

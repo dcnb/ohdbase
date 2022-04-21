@@ -2,7 +2,7 @@
 layout: visualization
 title: Visualizations
 order: 2
-object-id: visualizations
+objectid: visualizations
 filtersheet: filters
 filter: tags
 permalink: /subjects.html

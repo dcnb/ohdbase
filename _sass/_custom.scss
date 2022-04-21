@@ -43,7 +43,7 @@ position: fixed;
 
 .anchored-highlight{background:aquamarine;}
 .featured{display:block;float:none; clear:both;}
-.line{ font-size:11px; float:left;width:auto;}
+.linenum{ font-size:11px; float:left;width:auto;}
 .words{min-width: 650px;
   @include media-query($on-palm) {min-width: 250px;}}
 
@@ -62,5 +62,9 @@ element {
 .featured {
 
     background-color: #dbf1fd !important;
+  color: black !important;
+}
 
+.btn-outline-dark:hover {
+  background-color: #212529 !important;
 }
