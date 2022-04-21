@@ -108,7 +108,7 @@ endcapture -%}
     {% endfor %}{% endfor %}
     {% else %}
     {% for item in items %}
-    {% assign prev_index = forloop.index0 | times: 1 | minus: 1 %}
+    {% assign prev_index = forloop.index0 | times: 1 %}
     {% assign prev_speaker = items[prev_index].speaker %}
     {% assign mod = forloop.index | plus: 1 | modulo: 5 %}
     <div id="{{page.objectid}}{{ forloop.index }}" class="row line {{item.tags | replace: ';', ' '}} my-1">
