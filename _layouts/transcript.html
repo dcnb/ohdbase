@@ -67,13 +67,13 @@ endcapture -%}
                 aria-describedby="goButton" id="quicksearch">
               <div class="input-group-append">
                 <button class="btn btn-primary rounded-right border-light input-group-text" type="submit" title="Search"
-                  alt="Search" id="goButton" onclick="filterLines()">Go</button>
+                  alt="Search" id="goButton" onclick="filterLines('searchResults');">Go</button>
               </div>
             </div>
           </div>
           <div class="col-md-6">
             <button class="reset btn btn-sm btn-outline-primary mt-1" href="#" data-filter="">Reset Filters</button>
-            <h5 class="d-none linecount mt-2 small ms-3"><span id="numberof"></span></h5>
+            <h5 class="d-none filtercount mt-2 small ms-3"><span id="numberoffilters"></span></h5>
           </div>
         </div>
       </div>
@@ -108,10 +108,13 @@ endcapture -%}
     {% endfor %}{% endfor %}
     {% else %}
     {% for item in items %}
+    {% assign prev_index = forloop.index0 | times: 1 | minus: 1 %}
+    {% assign prev_speaker = items[prev_index].speaker %}
+    {% assign mod = forloop.index | plus: 1 | modulo: 5 %}
     <div id="{{page.objectid}}{{ forloop.index }}" class="row line {{item.tags | replace: ';', ' '}} my-1">
-      <div class="linenum col-1 small mt-2">{{ forloop.index }}</div>
+      <div class="linenum col-1 small mt-2 {% unless mod == 1 %}text-white{% endunless %}">{{ forloop.index }}</div>
       <p class="words col-10 col-md-8 col-print-10 pr-0">
-        {%if item.speaker%}<span class="fw-bold">{{item.speaker | remove: ":"}}:</span> {%endif%}{{item.words}}
+        {% if item.speaker and item.speaker != prev_speaker %}<span class="fw-bold">{{item.speaker | remove: ":"}}:</span><br/>{% else %}{%endif%}{{item.words}}
       </p>
       <div class="col-1 timestamp">{%if item.timestamp%}{% if page.av_source %}
         {% capture avlink %}timestamp/{{page.av_source}}.html{% endcapture %}

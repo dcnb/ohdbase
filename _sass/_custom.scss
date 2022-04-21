@@ -31,6 +31,23 @@
   color: grey;
  }
 
+ .grey-small {
+    color: grey;
+    height: 3px;
+    line-height: 2px;
+    overflow: hidden;
+}
+
+ .line.grey-small { 
+     .timestamp, .linenum {
+         display: none;
+     }
+     .words{
+    display: inline;
+    font-size: 3px;
+    padding: 0px 5px;}
+}
+
 .iframe-wrapper{
 position: fixed;
   right: 10px;

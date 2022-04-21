@@ -9,26 +9,36 @@
     var myClass = this.value;
     $("input#quicksearch").val("");
     $(".line").removeClass("featured");
-    $(".line").addClass("grey");    
+    $(".line").removeClass("grey");
+    $(".line").addClass("grey-small");    
     $('.line').removeClass("anchored-highlight");
-    $('div.' + myClass).addClass("featured");;
+    $('div.' + myClass).removeClass("grey-small");  
+    $('div.' + myClass).addClass("featured-filter");  
     var numberof = $('div.'+ myClass).length;
-    $("#numberof").html(numberof + " lines");
-    $('.linecount').removeClass('d-none');
+    $("#numberoffilters").html(numberof + " related lines");
+    $('.filtercount').removeClass('d-none');  
     let url = new URL(window.location);
     let params = url.searchParams;
     params.set('filter', myClass);
     params.delete('q');
     params.delete('scene');
     var p = params.toString();
+    $('.filter-search').addClass('d-none');
     window.history.replaceState({}, '', location.pathname + '?' + p);
+    $('html, body').animate({
+    scrollTop: $('.featured-filter:visible:first').offset().top
+}, 1000);
   }
   });
 
    $("button.reset").click(function() {
   $("div").removeClass("grey"); 
+  $("div").removeClass("grey-small"); 
+  $('.filtercount').addClass('d-none');  
   $('div').removeClass("anchored-highlight"); 
-    $("div").removeClass("featured"); 
+    $("div").removeClass("featured");
+    $("p").removeClass("featured");
+    $('.filter-search').addClass('d-none');
     $("input#quicksearch").val(""); 
     $("#filters").val($("#filters option:first").val());
     var numberofint = $('tr').length;
@@ -45,6 +55,7 @@ window.history.replaceState({}, '', location.pathname + '?' + p );
  function filterLines() {
     $('.line').removeClass("anchored-highlight");
     $(".line").removeClass("featured");
+    $("div").removeClass("grey-small"); 
     $(".line").addClass("grey");
     var input, filter, p, span, i;
     input = document.getElementById("quicksearch");
@@ -65,15 +76,15 @@ window.history.replaceState({}, '', location.pathname + '?' + p );
         if (itemcontents.innerHTML.toUpperCase().indexOf(filter) > -1) {
           itemcontents.classList.add("featured");
           itemcontents.classList.remove("grey");
+          searchResults += '<option class=text-truncate" style="max-width: 250px;" value="'+ i +'">Line ' + i + ' -- ' + itemcontents.innerHTML.substring(0,125) + '...</option>';
           itemcontents.innerHTML = itemcontents.innerHTML.replace(filterplain, "<span class='text-danger'>" + filterplain + "</span>");
-          searchResults += '<option value="'+ i +'">'+itemcontents.innerHTML + '</option>';
           } else {
         }
       }
       $("#filters").val($("#filters option:first").val("search filtering"));
 
      var numberofint = $('.featured').length;
-     $("#numberoflines").html(numberofint + " lines match your query");
+     $("#numberof").html(numberofint + " lines match your query");
      $("#searchResults").html(searchResults);
      $('.linecount').removeClass('d-none');
      $('.filter-search').removeClass('d-none');
@@ -93,6 +104,7 @@ window.history.replaceState({}, '', location.pathname + '?' + p );
   });
 console.log(position + ' - ' + plus_position);
 }
+
 
 
 
