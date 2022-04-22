@@ -51,7 +51,16 @@ position: fixed;
   height: 200px;
   width: 370px;
   @include media-query($on-palm) {
-    position:relative; 
+    bottom: 0px;
+    left: 0px;
+    height: auto;
+    width: 300px;
+    .meta{
+      display: none;
+    }
+    .vizdiv{
+      display: none;
+    }
   }
 }
 

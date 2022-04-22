@@ -3,10 +3,16 @@
     window.onscroll = function () {
         if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
             document.getElementById("scroll-to-top").style.display = "block";
-           // document.getElementById('player-holder').classList.add("iframe-wrapper")
+           document.getElementById('object-meta').classList.add('iframe-wrapper');
+           
+
+
+
         } else {
             document.getElementById("scroll-to-top").style.display = "none";
-            // document.getElementById('player-holder').classList.remove("iframe-wrapper")
+           document.getElementById('object-meta').classList.remove('iframe-wrapper');
+
+
         }
     }
     // scroll to top function

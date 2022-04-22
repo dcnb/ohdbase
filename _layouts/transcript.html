@@ -16,20 +16,14 @@ endcapture -%}
 {%- assign subjects = subjects | split: ";" -%}
 {%- assign uniqueSubjects = subjects | uniq | sort -%}
 {%endif%}
-<style>
-  {% for n in site.data.filters %}
-.{{ n.tag }} { fill: {% cycle '#e6194b','#3cb44b','#ffe119','#4363d8','#f58231','#911eb4','#46f0f0','#f032e6','#bcf60c','#fabebe','#008080','#e6beff','#9a6324','#fffac8','#800000','#aaffc3','#808000','#ffd8b1','#000075','#808080','#ffffff','#000000'%};}
-.{{ n.tag }}.{{ n.tag }}-primary{ fill: {% cycle '#e6194b !important','#3cb44b !important','#ffe119 !important','#4363d8 !important','#f58231 !important','#911eb4 !important','#46f0f0 !important','#f032e6 !important','#bcf60c !important','#fabebe !important','#008080 !important','#e6beff !important','#9a6324 !important','#fffac8 !important','#800000 !important','#aaffc3 !important','#808000 !important','#ffd8b1 !important','#000075 !important','#808080 !important','#ffffff !important','#000000 !important'%};}
-{% endfor %}
-
-  .black {
-    fill: black;
-  } 
+<style>{% for n in site.data.filters %}
+  .{{ n.tag }} { fill: {% cycle '#e6194b','#3cb44b','#ffe119','#4363d8','#f58231','#911eb4','#46f0f0','#f032e6','#bcf60c','#fabebe','#008080','#e6beff','#9a6324','#fffac8','#800000','#aaffc3','#808000','#ffd8b1','#000075','#808080','#ffffff','#000000'%};}
+  .{{ n.tag }}.{{ n.tag }}-primary{ fill: {% cycle '#e6194b !important','#3cb44b !important','#ffe119 !important','#4363d8 !important','#f58231 !important','#911eb4 !important','#46f0f0 !important','#f032e6 !important','#bcf60c !important','#fabebe !important','#008080 !important','#e6beff !important','#9a6324 !important','#fffac8 !important','#800000 !important','#aaffc3 !important','#808000 !important','#ffd8b1 !important','#000075 !important','#808080 !important','#ffffff !important','#000000 !important'%};}
+  {% endfor %}
+  .black {fill: black;}
 
   tr.black,
-  .hidden {
-    display: none;
-  }
+  .hidden { display: none;  }
 </style>
 <div class="container">
   <!--<button class="btn btn-outline-dark sticky-top float-end  p-3 bg-white mt-3" type="button" data-bs-toggle="collapse"
@@ -51,32 +45,42 @@ endcapture -%}
         {% endif %}
         {%endfor%}
   </div>-->
-  <div class="row">
-    <div class="p-5 w-75 justify-content-center m-auto">
+  <div id="full_container" class="p-3 p-md-5 justify-content-center m-auto" >
+    <div id="object-meta">
+      <h2 class="my-2 title meta">{{ page.title}}</h2>
+      <p class="meta">{%if page.location%}{{page.location}} on {%endif%}{%if
+        page.date-interviewed%}{{page.date-interviewed}}{%endif%}
+      </p>
+      {%if page.interviewer%}<p class="meta">Interviewer: {{page.interviewer}}</p>{%endif%}
       <div class="interview-object mt-5 px-3">
-        {% if page.av_source contains 'mp3' %}{% include player/mp3.html %}{% elsif page.av_source contains 'youtube' %}{%
-        include player/youtube.html %}{% elsif page.av_source contains 'soundcloud' %}{% include player/soundcloud.html %}{%
+        {% if page.av_source contains 'mp3' %}{% include player/mp3.html %}{% elsif page.av_source contains 'youtube'
+        %}{%
+        include player/youtube.html %}{% elsif page.av_source contains 'soundcloud' %}{% include
+        player/soundcloud.html %}{%
         endif %}
-        <h2 class="my-2">{{ page.title}}</h2>
-          <p>{%if page.location%}{{page.location}} on {%endif%}{%if page.date-interviewed%}{{page.date-interviewed}}{%endif%}
-          </p>
-          {%if page.interviewer%}<p>Interviewer: {{page.interviewer}}</p>{%endif%}
-          <div class="vizdiv">
-            <svg class="chart" width="100%" height="100px" style="overflow: visible">
-              {% for item in items %}
-              {% assign my_integer = forloop.length %}
-              {% assign my_float = my_integer | times: 1.0 %}
-              {% assign rect-width = 100 | divided_by: my_float  %}
-              {%if forloop.first%}<rect x="{{rect-width}}%" y="20" width="{{rect-width}}%" height="50" data-toggle="tooltip" data-placement="bottom" class="{{item.tags | replace: ';', ' '}}" title="{{ item.words }}"></rect>
-              {%else %} <a href="{{ forloop.index | prepend: page.objectid| prepend: '#' }}">
-                <rect x="{{forloop.index | times: rect-width }}%" y="20" width="{{rect-width}}%" height="50" data-toggle="tooltip" data-placement="top" class="{{item.tags | replace: ';', ' '}}" title="{{ item.words }}{% if item.tags %}(Subjects: {{ item.tags | replace: ';', ', ' }}){%endif%}"></rect>
-              </a>
-              {%endif%}{%endfor%}</svg>
-          </div>
-        </div>
-      <div class="row my-3 sticky-top bg-white border-bottom border-left border-right d-print-none pb-3" id="" style="z-index: 0;">
+      </div>
+      <div class="vizdiv">
+        <h3 class="mt-5 mb-0">Interview by Subjects:</h3>
+        <svg class="chart" width="100%" height="100px" style="overflow: visible">
+          {% for item in items %}
+          {% assign my_integer = forloop.length %}
+          {% assign my_float = my_integer | times: 1.0 %}
+          {% assign rect-width = 100 | divided_by: my_float %}
+          {%if forloop.first%}<rect x="{{rect-width}}%" y="20" width="{{rect-width}}%" height="50" data-toggle="tooltip"
+            data-placement="bottom" class="{{item.tags | replace: ';', ' '}}" title="{{ item.words }}"></rect>
+          {%else %} <a href="{{ forloop.index | prepend: page.objectid| prepend: '#' }}">
+            <rect x="{{forloop.index | times: rect-width }}%" y="20" width="{{rect-width}}%" height="50"
+              data-toggle="tooltip" data-placement="top" class="{{item.tags | replace: ';', ' '}}"
+              title="{{ item.words }}{% if item.tags %}(Subjects: {{ item.tags | replace: ';', ', ' }}){%endif%}">
+            </rect>
+          </a>
+          {%endif%}{%endfor%}</svg>
+      </div>
+    </div>
+    <div id="filters-content" class="pe-md-5">
+      <div class="row my-3 sticky-top bg-white border-bottom border-left border-right d-print-none pb-3 w-md-75" id="filters-search"  style="z-index: 0;">
         <div class="col-md-4 pt-4">
-          <select id="filters" title="Jump to a year" class="filters form-select" style="max-width: 100%;">
+          <select id="filters" title="Jump to a year" class="filters form-select">
             <option value="#" class="reset" selected="selected reset">Filter by Topic</option>
             <option value="all" selected="selected">On All Topics</option>
             {% assign filters = site.data.filters %}
@@ -86,7 +90,8 @@ endcapture -%}
             {% endfor %}
             {%else%}
             {% for filter in filters %}
-            {%if uniqueSubjects contains filter.tag %}<option value="{{ filter.tag }}">{{filter.description | capitalize}}
+            {%if uniqueSubjects contains filter.tag %}<option value="{{ filter.tag }}">
+              {{filter.description | capitalize}}
             </option>{%endif%}
             {% endfor %}
             {%endif%}
@@ -98,9 +103,11 @@ endcapture -%}
             <div class="row pt-4">
               <div class="col-md-6">
                 <div class="input-group fs-5">
-                  <input type="text" class="form-control" placeholder="Search..." aria-label="Search" aria-describedby="goButton" id="quicksearch">
+                  <input type="text" class="form-control" placeholder="Search..." aria-label="Search"
+                    aria-describedby="goButton" id="quicksearch">
                   <div class="input-group-append">
-                    <button class="btn btn-primary rounded-right border-light input-group-text" type="submit" title="Search" alt="Search" id="goButton" onclick="filterLines('searchResults');">Go</button>
+                    <button class="btn btn-primary rounded-right border-light input-group-text" type="submit"
+                      title="Search" alt="Search" id="goButton" onclick="filterLines('searchResults');">Go</button>
                   </div>
                 </div>
               </div>
@@ -121,7 +128,7 @@ endcapture -%}
       </div>
 
 
-      <div id="contents-container">
+      <div id="contents-container" class="pe-5">
         {% if page.objectid == 'all' %}
         {% for transcript in site.data.transcripts %}{%assign transcript-name = transcript[0] %}
         {% for item in transcript[1] %}
@@ -131,7 +138,8 @@ endcapture -%}
             {%if item.speaker%}{{item.speaker | remove: ":"}}: {%endif%}{{item.words}}
           </p>
           <div class="col-1 timestamp">{%if item.timestamp%}
-            <a href="{{ forloop.index | prepend: transcript-name | prepend: '.html#' | prepend: transcript-name | prepend: '/transcripts/' | relative_url }}">{{item.timestamp}}</a>{%
+            <a
+              href="{{ forloop.index | prepend: transcript-name | prepend: '.html#' | prepend: transcript-name | prepend: '/transcripts/' | relative_url }}">{{item.timestamp}}</a>{%
             endif %}
           </div>
         </div>
@@ -142,10 +150,11 @@ endcapture -%}
         {% assign prev_speaker = items[prev_index].speaker %}
         {% assign mod = forloop.index | plus: 1 | modulo: 5 %}
         <div id="{{page.objectid}}{{ forloop.index }}" class="row line {{item.tags | replace: ';', ' '}} my-1">
-          
+
           <p class="words col-md-10 col-lg-8 col-print-12 pr-0">
-            
-            {% unless item.speaker == prev_speaker %}<span class="fw-bold">{{item.speaker | remove: ":"}}:</span><br />{% endunless %}{{item.words}}
+
+            {% unless item.speaker == prev_speaker %}<span class="fw-bold">{{item.speaker | remove:
+              ":"}}:</span><br />{% endunless %}{{item.words}}
           </p>
           <div class="col-12 col-md-2 timestamp mb-3 small text-center">{%if item.timestamp%}{% if page.av_source %}
             {% capture avlink %}timestamp/{{page.av_source}}.html{% endcapture %}
@@ -156,9 +165,5 @@ endcapture -%}
         {% endif %}
       </div>
     </div>
-    <div class="col-md-5"> 
-     
-    </div>
   </div>
 </div>
-
