@@ -16,8 +16,21 @@ endcapture -%}
 {%- assign subjects = subjects | split: ";" -%}
 {%- assign uniqueSubjects = subjects | uniq | sort -%}
 {%endif%}
+<style>
+  {% for n in site.data.filters %}
+.{{ n.tag }} { fill: {% cycle '#e6194b','#3cb44b','#ffe119','#4363d8','#f58231','#911eb4','#46f0f0','#f032e6','#bcf60c','#fabebe','#008080','#e6beff','#9a6324','#fffac8','#800000','#aaffc3','#808000','#ffd8b1','#000075','#808080','#ffffff','#000000'%};}
+.{{ n.tag }}.{{ n.tag }}-primary{ fill: {% cycle '#e6194b !important','#3cb44b !important','#ffe119 !important','#4363d8 !important','#f58231 !important','#911eb4 !important','#46f0f0 !important','#f032e6 !important','#bcf60c !important','#fabebe !important','#008080 !important','#e6beff !important','#9a6324 !important','#fffac8 !important','#800000 !important','#aaffc3 !important','#808000 !important','#ffd8b1 !important','#000075 !important','#808080 !important','#ffffff !important','#000000 !important'%};}
+{% endfor %}
 
+  .black {
+    fill: black;
+  } 
 
+  tr.black,
+  .hidden {
+    display: none;
+  }
+</style>
 <div class="container">
   <!--<button class="btn btn-outline-dark sticky-top float-end  p-3 bg-white mt-3" type="button" data-bs-toggle="collapse"
     data-bs-target="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters" id="filter-button">
@@ -26,10 +39,41 @@ endcapture -%}
       <path
         d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z" />
     </svg>
-  </button>-->
+  </button>
   <div class="row">
-    
-    <div class="col-md-7">
+      {%for n in site.data.filters %}
+        {%if uniqueSubjects contains n.tag %}
+        <div class="col-md-2 col-4 ">
+          <svg class="legend" width="100%" height="25px" data-id="{{n.tag}}" style="cursor:pointer;" data-toggle="tooltip" data-placement="left" title="On {{ n.description | escape }}">
+            <circle cx="25" cy="10" r="10"  class="{{n.tag}}"></circle><text x="38" y="15">{{n.tag}}</text>
+          </svg>
+        </div>
+        {% endif %}
+        {%endfor%}
+  </div>-->
+  <div class="row">
+    <div class="p-5 w-75 justify-content-center m-auto">
+      <div class="interview-object mt-5 px-3">
+        {% if page.av_source contains 'mp3' %}{% include player/mp3.html %}{% elsif page.av_source contains 'youtube' %}{%
+        include player/youtube.html %}{% elsif page.av_source contains 'soundcloud' %}{% include player/soundcloud.html %}{%
+        endif %}
+        <h2 class="my-2">{{ page.title}}</h2>
+          <p>{%if page.location%}{{page.location}} on {%endif%}{%if page.date-interviewed%}{{page.date-interviewed}}{%endif%}
+          </p>
+          {%if page.interviewer%}<p>Interviewer: {{page.interviewer}}</p>{%endif%}
+          <div class="vizdiv">
+            <svg class="chart" width="100%" height="100px" style="overflow: visible">
+              {% for item in items %}
+              {% assign my_integer = forloop.length %}
+              {% assign my_float = my_integer | times: 1.0 %}
+              {% assign rect-width = 100 | divided_by: my_float  %}
+              {%if forloop.first%}<rect x="{{rect-width}}%" y="20" width="{{rect-width}}%" height="50" data-toggle="tooltip" data-placement="bottom" class="{{item.tags | replace: ';', ' '}}" title="{{ item.words }}"></rect>
+              {%else %} <a href="{{ forloop.index | prepend: page.objectid| prepend: '#' }}">
+                <rect x="{{forloop.index | times: rect-width }}%" y="20" width="{{rect-width}}%" height="50" data-toggle="tooltip" data-placement="top" class="{{item.tags | replace: ';', ' '}}" title="{{ item.words }}{% if item.tags %}(Subjects: {{ item.tags | replace: ';', ', ' }}){%endif%}"></rect>
+              </a>
+              {%endif%}{%endfor%}</svg>
+          </div>
+        </div>
       <div class="row my-3 sticky-top bg-white border-bottom border-left border-right d-print-none pb-3" id="" style="z-index: 0;">
         <div class="col-md-4 pt-4">
           <select id="filters" title="Jump to a year" class="filters form-select" style="max-width: 100%;">
@@ -112,17 +156,8 @@ endcapture -%}
         {% endif %}
       </div>
     </div>
-    <div class="col-md-5">
-      <div class="interview-object sticky-top mt-5 px-3">
-      {% if page.av_source contains 'mp3' %}{% include player/mp3.html %}{% elsif page.av_source contains 'youtube' %}{%
-      include player/youtube.html %}{% elsif page.av_source contains 'soundcloud' %}{% include player/soundcloud.html %}{%
-      endif %}
-      <h2 class="my-2">{{ page.title}}</h2>
-        <p>{%if page.location%}{{page.location}} on {%endif%}{%if page.date-interviewed%}{{page.date-interviewed}}{%endif%}
-        </p>
-        {%if page.interviewer%}<p>Interviewer: {{page.interviewer}}</p>{%endif%}
-      
-      </div>
+    <div class="col-md-5"> 
+     
     </div>
   </div>
 </div>

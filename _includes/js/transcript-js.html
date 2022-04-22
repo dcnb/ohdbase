@@ -7,6 +7,7 @@
   }
   else {
     var myClass = this.value;
+    vizFilter(myClass);
     $("input#quicksearch").val("");
     $(".line").removeClass("featured");
     $(".words").removeClass("featured");
@@ -148,4 +149,14 @@ var hashfilter = decodeURIComponent(location.hash.substr(1));//.replace(/%20/g, 
  else{
  }});
  
+
+
+ function vizFilter(x) {
+              console.log(x);
+              $("rect").addClass("black");            
+              $('rect.' + x).toggleClass("black").addClass(x + "-primary");
+              $("rect").not('.black').closest('div.vizdiv').removeClass("hidden");
+          }
+  
+
 </script>
