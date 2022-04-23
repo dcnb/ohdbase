@@ -27,15 +27,16 @@
     var p = params.toString();
     $('.filter-search').addClass('d-none');
     window.history.replaceState({}, '', location.pathname + '?' + p);
-    $('html, body').animate({
+ /*   $('html, body').animate({
     scrollTop: $('.featured-filter:visible:first').offset().top
-}, 1000);
+}, 1000);*/
   }
   });
 
    $("button.reset").click(function() {
   $("div").removeClass("grey"); 
   $("div").removeClass("grey-small"); 
+
   $('.filtercount').addClass('d-none');  
   $('div').removeClass("anchored-highlight"); 
     $("div").removeClass("featured");
@@ -51,6 +52,11 @@ params.delete('q');
    params.delete('filter'); 
    var p = params.toString();
 window.history.replaceState({}, '', location.pathname + '?' + p );
+$("rect").removeClass("dark");
+$("rect").removeClass("dark");
+$("rect").removeClass (function (index, className) {
+    return (className.match (/(^|\s)primary-\S+/g) || []).join(' ');
+});         
  });
 
 
@@ -154,10 +160,12 @@ var hashfilter = decodeURIComponent(location.hash.substr(1));//.replace(/%20/g, 
 
 
  function vizFilter(x) {
-              console.log(x);
-              $("rect").addClass("black");            
-              $('rect.' + x).toggleClass("black").addClass(x + "-primary");
-              $("rect").not('.black').closest('div.vizdiv').removeClass("hidden");
+  $("rect").removeClass (function (index, className) {
+    return (className.match (/(^|\s)primary-\S+/g) || []).join(' ');
+});    
+              $("rect").addClass("dark");            
+              $('rect.' + x).toggleClass("dark").addClass("primary-" + x);
+              $("rect").not('.dark').closest('div.vizdiv').removeClass("hidden");
           }
   
 

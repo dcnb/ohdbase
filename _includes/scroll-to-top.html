@@ -4,7 +4,7 @@ var triggerElement = document.getElementById('contents-container');
 
 window.onscroll = function(){
     //TOP
-    if(triggerElement.getBoundingClientRect().top <= -500){
+    if(triggerElement.getBoundingClientRect().top <= 0){
         document.getElementById("scroll-to-top").style.display = "block";
            document.getElementById('object-meta').classList.add('iframe-wrapper');
             }
@@ -16,7 +16,7 @@ window.onscroll = function(){
 }
 
     // When the user scrolls down from the top of the document, show the button
- /*   window.onscroll = function () {
+   /* window.onscroll = function () {
         if (document.body.scrollTop > 1000 || document.documentElement.scrollTop > 500) {
             document.getElementById("scroll-to-top").style.display = "block";
            document.getElementById('object-meta').classList.add('iframe-wrapper');

@@ -50,6 +50,7 @@ position: fixed;
   right: 10px;
   height: 200px;
   width: 370px;
+  transition: all 1s linear;
   @include media-query($on-palm) {
     bottom: 0px;
     left: 0px;
@@ -64,7 +65,7 @@ position: fixed;
   }
 }
 
-.anchored-highlight{background:aquamarine;}
+.anchored-highlight p.words{background:aquamarine;}
 .featured{display:block;float:none; clear:both;}
 .linenum{ font-size:11px; float:left;width:auto;}
 .words{

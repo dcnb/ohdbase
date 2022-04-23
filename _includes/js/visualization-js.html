@@ -4,12 +4,15 @@
 
     function codeFilter(x) {
               console.log(x);
-              $("rect").addClass("black");
+              $("rect").removeClass (function (index, className) {
+    return (className.match (/(^|\s)primary-\S+/g) || []).join(' ');
+});    
+               $("rect").addClass("black");
               $("circle").addClass("black");
               $("tr").addClass("black");
               $("div.contentsdiv").addClass("hidden");
               $("div.vizdiv").addClass("hidden");
-              $('rect.' + x).toggleClass("black");
+              $('rect.' + x).toggleClass("black").addClass("primary-" + x);
               $('circle.' + x).toggleClass("black");
               $('tr.' + x).toggleClass("black");
               $("tr").not('.black').closest('div.contentsdiv').removeClass("hidden");
@@ -20,6 +23,16 @@
               var p = params.toString();
               window.history.replaceState({}, '', location.pathname + '?' + p);
           }
+
+          function vizFilter(x) {
+  $("rect").removeClass (function (index, className) {
+    return (className.match (/(^|\s)primary-\S+/g) || []).join(' ');
+});    
+              $("rect").addClass("dark");            
+              $('rect.' + x).toggleClass("dark").addClass("primary-" + x);
+              $("rect").not('.dark').closest('div.vizdiv').removeClass("hidden");
+          }
+
           function interviewFilter(x) { 
               $("table").removeClass("hidden");
               $("svg").removeClass("hidden");
