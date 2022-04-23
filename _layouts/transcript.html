@@ -3,9 +3,7 @@ layout: default
 ---
 {% if page.objectid == 'all' %}
 {% assign transcripts = site.data.transcripts %}
-{%capture avsources%}{% for y in site.transcripts %}{{ y.av_source }};{% endfor %}
-{% endcapture %}
-{% assign avlinks-list = avlinks | split: ";" %}
+
 {% else %}
 {% assign items = site.data.transcripts[page.objectid] %}
 {%- comment -%} find all words used in the subject metadata {%- endcomment -%}
@@ -50,8 +48,9 @@ endcapture -%}
         player/soundcloud.html %}{%
         endif %}
       </div>
+      {% unless page.objectid == 'all' %}
       <div class="vizdiv">
-        <h3 class="mt-5 mb-0">Interview by Subjects:</h3>
+        <h3 class="mt-5 mb-0">Topics:</h3>
         <svg class="chart" width="100%" height="100px" style="overflow: visible">
           {% for item in items %}
           {% assign my_integer = forloop.length %}
@@ -66,7 +65,7 @@ endcapture -%}
             </rect>
           </a>
           {%endif%}{%endfor%}</svg>
-      </div>
+      </div>{% endunless %}
     </div>
     <div id="filters-content" class="pe-md-5">
       <div class="row my-3 sticky-top bg-white border-bottom border-left border-right d-print-none pb-3 w-md-75" id="filters-search"  style="z-index: 0;">
@@ -77,12 +76,12 @@ endcapture -%}
             {% assign filters = site.data.filters %}
             {% if page.objectid == 'all' %}
             {% for filter in filters %}
-            <option value="{{ filter.tag }}">{{filter.description | capitalize}}</option>
+            <option value="{{ filter.tag }}">{{filter.description | capitalize}} ({{filter.tag}})</option>
             {% endfor %}
             {%else%}
             {% for filter in filters %}
             {%if uniqueSubjects contains filter.tag %}<option value="{{ filter.tag }}">
-              {{filter.description | capitalize}}
+              {{filter.description | capitalize}} ({{filter.tag}})
             </option>{%endif%}
             {% endfor %}
             {%endif%}
@@ -124,15 +123,11 @@ endcapture -%}
         {% for transcript in site.data.transcripts %}{%assign transcript-name = transcript[0] %}
         {% for item in transcript[1] %}
         <div id="{{page.objectid}}{{ forloop.index }}" class="row line {{item.tags | replace: ';', ' '}} my-3">
-          <div class="linenum col-1 small mt-2">{{transcript-name}}-{{ forloop.index }}</div>
+          <div class="linenum col-1 small mt-2"><a href="{{ forloop.index | prepend: transcript-name | prepend: '.html#' | prepend: transcript-name | prepend: '/transcripts/' | relative_url }}">{{transcript-name}}-{{ forloop.index }}</a></div>
           <p class="words col-10 col-md-8 col-print-10 my-3">
             {%if item.speaker%}{{item.speaker | remove: ":"}}: {%endif%}{{item.words}}
           </p>
-          <div class="col-1 timestamp">{%if item.timestamp%}
-            <a
-              href="{{ forloop.index | prepend: transcript-name | prepend: '.html#' | prepend: transcript-name | prepend: '/transcripts/' | relative_url }}">{{item.timestamp}}</a>{%
-            endif %}
-          </div>
+
         </div>
         {% endfor %}{% endfor %}
         {% else %}
