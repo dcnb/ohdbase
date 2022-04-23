@@ -1,7 +1,23 @@
 <script>
+// establish the element past which the scroll event happens
+var triggerElement = document.getElementById('contents-container');
+
+window.onscroll = function(){
+    //TOP
+    if(triggerElement.getBoundingClientRect().top <= -500){
+        document.getElementById("scroll-to-top").style.display = "block";
+           document.getElementById('object-meta').classList.add('iframe-wrapper');
+            }
+    //BOTTOM
+    else {
+        document.getElementById("scroll-to-top").style.display = "none";
+           document.getElementById('object-meta').classList.remove('iframe-wrapper');
+    }
+}
+
     // When the user scrolls down from the top of the document, show the button
-    window.onscroll = function () {
-        if (document.body.scrollTop > 700 || document.documentElement.scrollTop > 500) {
+ /*   window.onscroll = function () {
+        if (document.body.scrollTop > 1000 || document.documentElement.scrollTop > 500) {
             document.getElementById("scroll-to-top").style.display = "block";
            document.getElementById('object-meta').classList.add('iframe-wrapper');
            
@@ -14,7 +30,7 @@
 
 
         }
-    }
+    }*/
     // scroll to top function
     function scrollToTop() {
         window.scroll({
