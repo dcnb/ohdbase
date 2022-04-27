@@ -49,8 +49,24 @@ endcapture -%}
         endif %}
       </div>
       {% unless page.objectid == 'all' %}
-      <div class="vizdiv">
-        <h3 class="mt-5 mb-0">Topics:</h3>
+      <div class="vizdiv ">
+        <div class="col-md-8">
+          <select id="filters" title="Jump to a year" class="filters form-select mt-4">
+            <option value="#" class="reset" selected="selected reset">Filter by Topic</option>
+            {% assign filters = site.data.filters %}
+            {% if page.objectid == 'all' %}
+            {% for filter in filters %}
+            <option value="{{ filter.tag }}">{{filter.description | capitalize}} ({{filter.tag}})</option>
+            {% endfor %}
+            {%else%}
+            {% for filter in filters %}
+            {%if uniqueSubjects contains filter.tag %}<option value="{{ filter.tag }}">
+              {{filter.description | capitalize}} ({{filter.tag}})
+            </option>{%endif%}
+            {% endfor %}
+            {%endif%}
+          </select>
+        </div>
         <svg class="chart" width="100%" height="100px" style="overflow: visible">
           {% for item in items %}
           {% assign my_integer = forloop.length %}
@@ -65,34 +81,14 @@ endcapture -%}
             </rect>
           </a>
           {%endif%}{%endfor%}</svg>
-      </div>{% endunless %}
-    </div>
-    <div id="filters-content" class="pe-md-5">
-      <div class="row my-3 sticky-top bg-white border-bottom border-left border-right d-print-none pb-3 w-md-75" id="filters-search"  style="z-index: 0;">
-        <div class="col-6 col-md-4 pt-4">
-          <select id="filters" title="Jump to a year" class="filters form-select">
-            <option value="#" class="reset" selected="selected reset">Filter by Topic</option>
-            <option value="all" selected="selected">On All Topics</option>
-            {% assign filters = site.data.filters %}
-            {% if page.objectid == 'all' %}
-            {% for filter in filters %}
-            <option value="{{ filter.tag }}">{{filter.description | capitalize}} ({{filter.tag}})</option>
-            {% endfor %}
-            {%else%}
-            {% for filter in filters %}
-            {%if uniqueSubjects contains filter.tag %}<option value="{{ filter.tag }}">
-              {{filter.description | capitalize}} ({{filter.tag}})
-            </option>{%endif%}
-            {% endfor %}
-            {%endif%}
-          </select>
-          <h5 class="d-none filtercount mt-2 small ms-3"><span id="numberoffilters"></span></h5>
 
-        </div>
-        <div class="col-6 col-md-6">
+      </div>{% endunless %}
+    
+      <div class="row mb-3 bg-white border-bottom border-left border-right d-print-none pb-3" id="filters-search"  style="z-index: 0;">
+        <div class="col">
           <div id="transcriptsearch" class="bg-lightr">
-            <div class="row pt-4">
-              <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-9">
                 <div class="input-group fs-5">
                   <input type="text" class="form-control" placeholder="Search..." aria-label="Search"
                     aria-describedby="goButton" id="quicksearch">
@@ -102,8 +98,8 @@ endcapture -%}
                   </div>
                 </div>
               </div>
-              <div class="col-md-6">
-                <button class="reset btn btn-sm btn-outline-primary mt-1" href="#" data-filter="">Reset Filters</button>
+              <div class="col-md-3">
+                <button class="reset btn btn-sm btn-outline-primary mt-1" href="#" data-filter="">Reset</button>
               </div>
             </div>
           </div>
@@ -117,7 +113,8 @@ endcapture -%}
         </div>
       </div>
 
-
+    </div>
+    <div id="filters-content" class="pe-md-5">
       <div id="contents-container" class="pe-5">
         {% if page.objectid == 'all' %}
         {% for transcript in site.data.transcripts %}{%assign transcript-name = transcript[0] %}
