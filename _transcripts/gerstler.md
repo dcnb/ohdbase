@@ -1,5 +1,5 @@
 ---
-objectid: gerstler
+object-id: gerstler
 collection-type: Filterable Transcript  
 title: Amy Gerstler
 transcript: transcript-gerstler

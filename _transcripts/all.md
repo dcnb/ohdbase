@@ -1,5 +1,5 @@
 ---
-objectid: all
+object-id: all
 transcript: transcript-all  
 first-name: all
 last-name: subjects   

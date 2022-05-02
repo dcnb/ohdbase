@@ -35,9 +35,9 @@
                     <a class="nav-link  dropdown-toggle {% if page.url contains '/transcripts/'  %}active{%else%}{% endif %}" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                         Interviews
                     </a>
-                    <div class="dropdown-menu">
+                    <div class="dropdown-menu dropdown-menu-end">
                         {% for transcript in site.transcripts %}
-                        <a class="dropdown-item" href="{{ transcript.objectid | prepend: '/transcripts/' | relative_url }}.html">{{transcript.title}}</a>
+                        <a class="dropdown-item" href="{{ transcript.object-id | prepend: '/transcripts/' | relative_url }}.html">{{transcript.title}}</a>
                         {%endfor%}
                     </div>
                 </li>

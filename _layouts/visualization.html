@@ -23,29 +23,27 @@ layout: default
   <br />
   {% for transcript in transcripts %}{%assign transcript-name = transcript[0] %}
   <div class="vizdiv">
-    <h3 x="0" y="0" data-id="{{transcript-name}}" style="cursor:pointer;" class="mt-4 toggle_int {{transcript-name}}">{% for t in site.transcripts %}{% if t.objectid == transcript-name %}{{t.title}}{% endif %}{% endfor%}<i class="fas fa-filter"></i> <small>Click to filter</small></h3>
+    <h3 x="0" y="0" data-id="{{transcript-name}}" style="cursor:pointer;" class="mt-4 toggle_int {{transcript-name}}">{% for t in site.transcripts %}{% if t.object-id == transcript-name %}{{t.title}}{% endif %}{% endfor%}<i class="fas fa-filter"></i> <small>Click to filter</small></h3>
     <svg class="chart {{transcript-name}}" width="100%" height="100px" style="overflow: visible">
       {% for item in transcript[1] %}
       {% assign my_integer = forloop.length %}
       {% assign my_float = my_integer | times: 1.0 %}
       {% assign rect-width = 100 | divided_by: my_float  %}
-      {%if forloop.first%}<rect x="{{rect-width}}%" y="20" width="{{rect-width}}%" height="50" data-toggle="tooltip" data-placement="top" class="{{item.tags | replace: ';', ' '}}" title="{{ item.words }}"></rect>
-      {%else %} <a href="{{ forloop.index | prepend: transcript-name | prepend: '.html#' | prepend: transcript-name | prepend: '/transcripts/' | relative_url }}">
-        <rect x="{{forloop.index | times: rect-width }}%" y="20" width="{{rect-width}}%" height="50" data-toggle="tooltip" data-placement="top" class="{{item.tags | replace: ';', ' '}}" title="{{ item.words }}{% if item.tags %}(Subjects: {{ item.tags | replace: ';', ', ' }}){%endif%}"></rect>
-      </a>
-      {%endif%}{%endfor%}</svg>
+      <a href="{{ forloop.index | prepend: transcript-name | prepend: '.html#' | prepend: transcript-name | prepend: '/transcripts/' | relative_url }}">
+        <rect x="{{forloop.index0 | times: rect-width }}%" y="20" width="{{rect-width}}%" height="50" data-toggle="tooltip" data-placement="top" class="{{item.tags | replace: ';', ' '}}" title="{{ item.words }}{% if item.tags %}(Subjects: {{ item.tags | replace: ';', ', ' }}){%endif%}"></rect>
+      </a>{%endfor%}</svg>
   </div>{%endfor%}
 
 </div>
 <br />
 <hr /><br />
-<div class="container d-md-none">
+<div class="container d-none">
   <h2>Contents</h2>
 
 
   {% for transcript in site.data.transcripts %}{%assign transcript-name = transcript[0] %}
-  {%capture audiovideo-id %}{%for item in site.transcripts%}{%if item.objectid == transcript-name %}{{item.audiovideo-id}}{%endif%}{%endfor%}{% endcapture %}
-  {%capture avlink %}{%for item in site.transcripts%}{%if item.objectid == transcript-name %}timestamp/{{item.av_source}}.html{%endif%}{%endfor%}{% endcapture %}
+  {%capture audiovideo-id %}{%for item in site.transcripts%}{%if item.object-id == transcript-name %}{{item.audiovideo-id}}{%endif%}{%endfor%}{% endcapture %}
+  {%capture avlink %}{%for item in site.transcripts%}{%if item.object-id == transcript-name %}timestamp/{{item.av_source}}.html{%endif%}{%endfor%}{% endcapture %}
   {% for item in transcript[1] %}
   {% if forloop.first %}
   <div class="contentsdiv">

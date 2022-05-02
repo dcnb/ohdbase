@@ -1,5 +1,5 @@
 ---
-objectid: mohammad
+object-id: mohammad
 collection-type: Filterable Transcript  
 title: K. Silem Mohammad
 transcript: transcript-mohammad

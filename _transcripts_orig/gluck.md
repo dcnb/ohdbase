@@ -1,5 +1,5 @@
 ---
-objectid: gluck
+object-id: gluck
 title: Louise Glück (MP3)
 date-interviewed: May 15, 2014
 location: Cambridge, MA

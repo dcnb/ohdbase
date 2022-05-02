@@ -2,7 +2,7 @@
 layout: page
 title: About 
 order: 1
-objectid: about
+object-id: about
 permalink: /about.html
 ---
 # About {{site.title}}

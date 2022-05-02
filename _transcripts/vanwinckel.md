@@ -1,5 +1,5 @@
 ---
-objectid: vanwinckel
+object-id: vanwinckel
 collection-type: Filterable Transcript  
 title: Nance Van Winckel    
 transcript: transcript-vanwinckel  

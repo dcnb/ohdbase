@@ -1,5 +1,5 @@
 ---
-objectid: mohammad
+object-id: mohammad
 title: K. Silem Mohammad (Vimeo)
 date-interviewed: June 16, 2014
 location: Ashland, OR

@@ -1,5 +1,5 @@
 ---
-objectid: wrigley
+object-id: wrigley
 title: Robert Wrigley (SoundCloud)
 date-interviewed: November 21, 2013
 location: Moscow, ID

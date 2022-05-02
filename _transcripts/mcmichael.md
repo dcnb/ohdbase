@@ -1,5 +1,5 @@
 ---
-objectid: mcmichael
+object-id: mcmichael
 collection-type: Filterable Transcript  
 title: James McMichael    
 transcript: transcript-mcmichael

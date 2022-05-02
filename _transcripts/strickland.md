@@ -1,5 +1,5 @@
 ---
-objectid: strickland
+object-id: strickland
 collection-type: Filterable Transcript  
 title: Stephanie Strickland    
 first-name: Stephanie

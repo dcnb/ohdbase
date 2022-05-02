@@ -1,5 +1,5 @@
 ---
-objectid: beasley
+object-id: beasley
 collection-type: Filterable Transcript  
 title: Bruce Beasley
 transcript: transcript-beasley

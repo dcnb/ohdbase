@@ -41,10 +41,8 @@ layout: cover
         {% assign my_integer = forloop.length %}
         {% assign my_float = my_integer | times: 1.0 %}
         {% assign rect-width = 100 | divided_by: my_float  %}
-        {%if forloop.first%}<rect x="{{rect-width}}%" y="0" width="{{rect-width}}%" height="20" data-toggle="tooltip" data-placement="top" class="{{item.tags | replace: ';', ' '}}" title="{{ item.words }}"></rect>
-        {%else %} 
-          <rect x="{{forloop.index | times: rect-width }}%" y="0" width="{{rect-width}}%" height="20" data-toggle="tooltip" data-placement="top" class="{{item.tags | replace: ';', ' '}}" title="{{ item.words }}{% if item.tags %}(Subjects: {{ item.tags | replace: ';', ', ' }}){%endif%}"></rect>
-        {%endif%}{%endfor%}</svg></a>
+          <rect x="{{forloop.index0 | times: rect-width }}%" y="20" width="{{rect-width}}%" height="50" data-toggle="tooltip" data-placement="top" class="{{item.tags | replace: ';', ' '}}" title="{{ item.words }}{% if item.tags %}(Subjects: {{ item.tags | replace: ';', ', ' }}){%endif%}"></rect>
+        {%endfor%}</svg></a>
     </div>{%endfor%}
    </div>
    {% endif %}
