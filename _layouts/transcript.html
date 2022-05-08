@@ -3,7 +3,6 @@ layout: default
 ---
 {% if page.object-id == 'all' %}
 {% assign transcripts = site.data.transcripts %}
-
 {% else %}
 {% assign items = site.data.transcripts[page.object-id] %}
 {%- comment -%} find all words used in the subject metadata {%- endcomment -%}
@@ -27,8 +26,8 @@ endcapture -%}
       {%for n in site.data.filters %}
         {%if uniqueSubjects contains n.tag %}
         <div class="col-md-2 col-4 ">
-          <svg class="legend" width="100%" height="25px" data-id="{{n.tag}}" style="cursor:pointer;" data-toggle="tooltip" data-placement="left" title="On {{ n.description | escape }}">
-            <circle cx="25" cy="10" r="10"  class="{{n.tag}}"></circle><text x="38" y="15">{{n.tag}}</text>
+          <svg class="legend" width="100%" height="25px" data-id="{{n.tag | slugiy }}" style="cursor:pointer;" data-toggle="tooltip" data-placement="left" title="On {{ n.description | escape }}">
+            <circle cx="25" cy="10" r="10"  class="{{n.tag | slugify }}"></circle><text x="38" y="15">{{n.tag}}</text>
           </svg>
         </div>
         {% endif %}
@@ -57,7 +56,7 @@ endcapture -%}
           {% assign my_float = my_integer | times: 1.0 %}
           {% assign rect-width = 100 | divided_by: my_float %}
           <a href="{{ forloop.index | prepend: page.object-id | prepend: '#' }}">
-            <rect x="{{forloop.index0 | times: rect-width }}%" y="20" width="{{rect-width}}%" height="50" data-toggle="tooltip" data-placement="top" class="{{item.tags | replace: ';', ' '}}" title="{{ item.words }}{% if item.tags %}(Subjects: {{ item.tags | replace: ';', ', ' }}){%endif%}"></rect>
+            <rect x="{{forloop.index0 | times: rect-width }}%" y="20" width="{{rect-width}}%" height="50" data-toggle="tooltip" data-placement="top" class="{%- assign tags = item.tags | split: ";" -%}{% for tag in tags %}{{tag | slugify }} {% endfor %}" title="{{ item.words }}{% if item.tags %}(Subjects: {{ item.tags | replace: ';', ', ' }}){%endif%}"></rect>
           </a>{%endfor%}</svg>
       </div>{% endunless %}
     </div>
@@ -70,11 +69,11 @@ endcapture -%}
             {% assign filters = site.data.filters %}
             {% if page.object-id == 'all' %}
             {% for filter in filters %}
-            <option value="{{ filter.tag }}">{{filter.description | capitalize}} ({{filter.tag}})</option>
+            <option value="{{ filter.tag | slugify }}">{{filter.description | capitalize}} ({{filter.tag}})</option>
             {% endfor %}
             {%else%}
             {% for filter in filters %}
-            {%if uniqueSubjects contains filter.tag %}<option value="{{ filter.tag }}">
+            {%if uniqueSubjects contains filter.tag %}<option value="{{ filter.tag | slugify }}">
               {{filter.description | capitalize}} ({{filter.tag}})
             </option>{%endif%}
             {% endfor %}
@@ -116,7 +115,7 @@ endcapture -%}
         {% if page.object-id == 'all' %}
         {% for transcript in site.data.transcripts %}{%assign transcript-name = transcript[0] %}
         {% for item in transcript[1] %}
-        <div id="{{page.object-id}}{{ forloop.index }}" class="row line {{item.tags | replace: ';', ' '}} my-3">
+        <div id="{{page.object-id}}{{ forloop.index }}" class="{%- assign tags = item.tags | split: ";" -%}{% for tag in tags %}{{tag | slugify }} {% endfor %} row line my-3">
           <div class="linenum col-1 small mt-2"><a href="{{ forloop.index | prepend: transcript-name | prepend: '.html#' | prepend: transcript-name | prepend: '/transcripts/' | relative_url }}">{{transcript-name}}-{{ forloop.index }}</a></div>
           <p class="words col-10 col-md-8 col-print-10 my-3">
             {%if item.speaker%}{{item.speaker | remove: ":"}}: {%endif%}{{item.words}}
@@ -129,7 +128,7 @@ endcapture -%}
         {% assign prev_index = forloop.index0 | times: 1 | minus: 1 %}
         {% assign prev_speaker = items[prev_index].speaker %}
         {% assign mod = forloop.index | plus: 1 | modulo: 5 %}
-        <div id="{{page.object-id}}{{ forloop.index }}" class="row line {{item.tags | replace: ';', ' '}} my-1">
+        <div id="{{page.object-id}}{{ forloop.index }}" class="{%- assign tags = item.tags | split: ";" -%}{% for tag in tags %}{{tag | slugify }} {% endfor %} row line my-1">
 
           <p class="words col-md-10 col-lg-8 col-print-12 pr-0">
 
